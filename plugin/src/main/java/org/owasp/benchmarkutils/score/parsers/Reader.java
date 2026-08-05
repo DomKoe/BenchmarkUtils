@@ -33,9 +33,11 @@ import org.owasp.benchmarkutils.score.parsers.csv.WhiteHatDynamicReader;
 import org.owasp.benchmarkutils.score.parsers.sarif.BanditReader;
 import org.owasp.benchmarkutils.score.parsers.sarif.CodeQLReader;
 import org.owasp.benchmarkutils.score.parsers.sarif.CodeSonarReader;
+import org.owasp.benchmarkutils.score.parsers.sarif.CogniumReader;
 import org.owasp.benchmarkutils.score.parsers.sarif.ContrastScanReader;
 import org.owasp.benchmarkutils.score.parsers.sarif.DatadogSastReader;
 import org.owasp.benchmarkutils.score.parsers.sarif.FortifySarifReader;
+import org.owasp.benchmarkutils.score.parsers.sarif.OpenTaintReader;
 import org.owasp.benchmarkutils.score.parsers.sarif.PTAIReader;
 import org.owasp.benchmarkutils.score.parsers.sarif.PrecautionReader;
 import org.owasp.benchmarkutils.score.parsers.sarif.SemgrepSarifReader;
@@ -70,6 +72,7 @@ public abstract class Reader {
                 new CheckmarxReader(),
                 new CodeQLReader(),
                 new CodeSonarReader(),
+                new CogniumReader(),
                 new ContrastAssessReader(),
                 new ContrastScanReader(),
                 new CoverityReader(),
@@ -83,6 +86,7 @@ public abstract class Reader {
                 new FortifyReader(),
                 new FortifySarifReader(),
                 new FusionLiteInsightReader(),
+                new GitlabAdvancedSastReader(),
                 new HCLAppScanIASTReader(),
                 new HCLAppScanSourceReader(),
                 new HCLAppScanStandardReader(),
@@ -96,6 +100,7 @@ public abstract class Reader {
                 new NetsparkerReader(),
                 new NJSScanReader(),
                 new NoisyCricketReader(),
+                new OpenTaintReader(),
                 new ParasoftReader(),
                 new PrecautionReader(),
                 new PMDReader(),
