@@ -922,6 +922,9 @@ public class ParasoftReader extends Reader {
                     returnValue = 561; // Dead Code
                     break;
 
+                case "SEC.AFNRO": // Inspect array fields that are declared as readonly
+                    returnValue = 582; // Array Declared Public, Final, and Static
+                    break;
                 case "ROSLYN.SCS.OTHER.SCS0027": // Open Redirect
                     returnValue = 601; // Open Redirect
                     break;

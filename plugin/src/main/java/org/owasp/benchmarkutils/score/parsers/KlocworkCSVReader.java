@@ -532,6 +532,11 @@ public class KlocworkCSVReader extends Reader {
                 return 704; // CWE-704 Incorrect Type Conversion or Cast
             case "JD.BITCMP": // Questionable use of Bit compare operation
                 return 754; // Improper Check for Unusual or Exceptional Conditions
+            case "CWARN.IMPLICITINT": // Use of anachronistic 'implicit int' rule in declaration
+            case "FUNCRET.GEN": // Non-void function does not return value
+            case "RETVOID.GEN": // Non-void function returns void value
+                return 758; // CWE-758 Reliance on Undefined, Unspecified, or Implementation-Defined
+                // Behavior
             case "SV.HASH.NO_SALT": // Use of a one-way cryptographic hash without a salt
                 return 759; // CWE-759: Use of a One-Way Hash without a Salt
                 // Not the same as: CweNumber.WEAK_HASH_ALGO; - CWE: 328 Weak Hashing

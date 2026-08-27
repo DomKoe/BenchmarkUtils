@@ -78,6 +78,13 @@ public class CppcheckXMLReader extends Reader {
         }
         tr.setToolVersion(version);
 
+        // If any rules in this file are premium-bughunting rules, then set this flag to true.
+        // NOTE: Not ALL results files have premium-bughunting rules in them, so add a hack to
+        // search for 'hunt' in the results file name to override this.
+        bugHuntingRulesEnabled =
+                resultFile.filename().toLowerCase().contains("hunt")
+                        || resultFile.content().contains("premium-bughunting");
+
         Node errorsNode =
                 (legacyFormat
                         ? resultFile.xmlRootNode()
@@ -404,6 +411,11 @@ public class CppcheckXMLReader extends Reader {
             case "misra-c2012-17.7": // The value returned by a function having non-void return type
                 // shall be used
                 return 252; // CWE-252 Unchecked Return Value
+
+            case "premium-licenseExpiresSoon": // Simply a warning that the license will expire
+                // soon, so ignore.
+            case "premium-invalidLicense": // Simply a warning that the license has expired
+                return CweNumber.DONTCARE;
 
             default:
                 /* DEBUG code to help map MISRA findings:
