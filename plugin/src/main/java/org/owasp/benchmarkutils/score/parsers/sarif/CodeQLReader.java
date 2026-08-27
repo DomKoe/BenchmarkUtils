@@ -46,7 +46,7 @@ public class CodeQLReader extends SarifReader {
                 return 313; // CWE-313 Cleartext Storage in a File or on Disk
             case 335: // java/predictable-seed - Improves the tool's score
                 return CweNumber.WEAK_RANDOM; // Weak Random
-                       case 401: // cpp/new-free-mismatch - CWE-401 is Missing Release of Memory
+            case 401: // cpp/new-free-mismatch - CWE-401 is Missing Release of Memory
                 return 762; // CWE-762: Mismatched Memory Management Routines (much better mapping)
             case 665: // cpp/uninitialized-local (Mapped to CWE-665: Improper Initialization and
                 // CWE-457) 457 is a better mapping.
@@ -92,7 +92,7 @@ public class CodeQLReader extends SarifReader {
             // Do nothing it if can't be found.
         }
 
-        // Check to see if the extended ruleset is being used. If so, add '_extended' to version name
+        // Check if the extended ruleset is being used. If so, add '_extended' to version name
         // NOTE: This is VERY BRITTLE. We check for the presence of TWO Java specific rules that are
         // currently in the extended ruleset but not in the default. If they are both there, we add
         // _extended
