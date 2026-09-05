@@ -28,6 +28,7 @@ public class ToolResultsBuilder {
     private double truePositiveRate = 0;
     private double falsePositiveRate = 0;
     private double precision = 0;
+    private double scoreMicroAvg = 0;
 
     private ToolResultsBuilder() {}
 
@@ -41,6 +42,7 @@ public class ToolResultsBuilder {
         results.setTruePositiveRate(truePositiveRate);
         results.setFalsePositiveRate(falsePositiveRate);
         results.setPrecision(precision);
+        results.setOverallScoreMicroAvg(scoreMicroAvg);
 
         categoryResults.forEach(
                 cr ->
@@ -80,6 +82,12 @@ public class ToolResultsBuilder {
 
     public ToolResultsBuilder setPrecision(double precision) {
         this.precision = precision;
+
+        return this;
+    }
+
+    public ToolResultsBuilder setOverallScoreMicroAvg(double scoreMicroAvg) {
+        this.scoreMicroAvg = scoreMicroAvg;
 
         return this;
     }

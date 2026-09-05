@@ -603,11 +603,13 @@ public class BenchmarkScore extends AbstractMojo {
         return tmp;
     }
 
-    private static ToolResults calculateMetrics(Map<String, TP_FN_TN_FP_Counts> results) {
+    static ToolResults calculateMetrics(Map<String, TP_FN_TN_FP_Counts> results) {
 
         ToolResults metrics = new ToolResults();
         double totalFPRate = 0;
         double totalTPRate = 0;
+        double totalPrecisionSum = 0;
+        double totalFScoreSum = 0;
         int total = 0;
         int totalTP = 0;
         int totalFP = 0;
@@ -637,15 +639,37 @@ public class BenchmarkScore extends AbstractMojo {
             // Add the metrics for this particular category. But this add() doesn't automatically
             // update the overall metrics, so those are set after this for loop completes.
             metrics.add(category, precision, tpr, fpr, rowTotal);
+
+            // Accumulate this category's own precision/fscore (equal weight per category) rather
+            // than pooling raw counts, so the overall Precision/F-Score stay consistent with how
+            // Score (TPR-FPR) below has always been macro-averaged.
+            CategoryResults cr = metrics.getCategoryResults(category);
+            totalPrecisionSum += cr.precision;
+            totalFScoreSum += cr.fscore;
         } // end for
 
         int resultsSize = results.size();
-        double totalPrecision = (double) totalTP / (double) (totalTP + totalFP);
-        // tp & fp can both be zero, creating a precision of NaN. If so, set to 0.0.
-        if (Double.isNaN(totalPrecision)) totalPrecision = 0.0;
-        metrics.setPrecision(totalPrecision);
+
+        // Macro-averaged Precision and F-score: mean of each category's own value, giving every
+        // vulnerability category equal weight regardless of its number of test cases.
+        double macroPrecision = totalPrecisionSum / resultsSize;
+        double macroFScore = totalFScoreSum / resultsSize;
+
+        // Pooled/micro-averaged Score: every test case weighted equally, computed by pooling raw
+        // TP/FN/FP/TN across all categories first, then taking TPR - FPR of the pooled counts.
+        double pooledTPR = (double) totalTP / (double) (totalTP + totalFN);
+        if (Double.isNaN(pooledTPR)) pooledTPR = 0.0;
+        double pooledFPR = (double) totalFP / (double) (totalFP + totalTN);
+        if (Double.isNaN(pooledFPR)) pooledFPR = 0.0;
+        double scoreMicroAvg = pooledTPR - pooledFPR;
+
+        metrics.setPrecision(macroPrecision);
         metrics.setFalsePositiveRate(totalFPRate / resultsSize);
         metrics.setTruePositiveRate(totalTPRate / resultsSize);
+        // Must come after setPrecision()/setTruePositiveRate(), whose side effects would
+        // otherwise silently overwrite this with their own (mixed micro/macro) derivation.
+        metrics.setFScore(macroFScore);
+        metrics.setOverallScoreMicroAvg(scoreMicroAvg);
         metrics.setTotalTestCases(total);
         metrics.setFindingCounts(totalTP, totalFP, totalFN, totalTN);
 

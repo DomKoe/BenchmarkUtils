@@ -79,6 +79,7 @@ public class OverallStatsTable {
         htmlBuilder.th("${tprlabel}*");
         htmlBuilder.th("FPR*");
         htmlBuilder.th("Score*");
+        htmlBuilder.th("Score (Pooled)*");
 
         htmlBuilder.endTr();
     }
@@ -105,6 +106,7 @@ public class OverallStatsTable {
                 .td(twoDecimalPlacesPercentage.format(results.getTruePositiveRate()))
                 .td(twoDecimalPlacesPercentage.format(results.getFalsePositiveRate()))
                 .td(twoDecimalPlacesPercentage.format(results.getOverallScore()))
+                .td(twoDecimalPlacesPercentage.format(results.getOverallScoreMicroAvg()))
                 .endTr();
     }
 

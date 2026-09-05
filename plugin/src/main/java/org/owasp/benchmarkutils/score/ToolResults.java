@@ -43,6 +43,12 @@ public class ToolResults {
     private double FScore =
             0; // 2 * precision * TPR / (Precision + TPR). Autocalculated when values changed.
 
+    // Pooled (test-case-weighted) score: TPR - FPR computed after summing TP/FP/FN/TN across all
+    // categories, i.e. every test case weighted equally. Contrast with `score` above, which
+    // weights every vulnerability category equally regardless of its number of test cases. Set
+    // explicitly via setOverallScoreMicroAvg(); not auto-derived like `score`.
+    private double scoreMicroAvg = 0;
+
     private TP_FN_TN_FP_Counts findingCounts;
 
     private String time = "Unknown";
@@ -98,6 +104,24 @@ public class ToolResults {
     }
 
     /**
+     * Returns the pooled/micro-averaged overall score for this tool: pooled TPR - pooled FPR, where
+     * "pooled" means all TP/FP/FN/TN counts are summed across every vulnerability category before
+     * computing the rate (i.e., every test case is weighted equally). Contrast with {@link
+     * #getOverallScore()}, which is macro-averaged (every vulnerability category weighted equally
+     * regardless of its number of test cases).
+     *
+     * @return This tool's pooled/micro-averaged overall score.
+     */
+    public double getOverallScoreMicroAvg() {
+        return this.scoreMicroAvg;
+    }
+
+    /** Directly sets the pooled/micro-averaged overall score. No side effects. */
+    public void setOverallScoreMicroAvg(double scoreMicroAvg) {
+        this.scoreMicroAvg = scoreMicroAvg;
+    }
+
+    /**
      * Returns the overall F-score for this tool. Calculated as: 2 * precision * TPR / (Precision +
      * TPR)
      *
@@ -105,6 +129,18 @@ public class ToolResults {
      */
     public double getFScore() {
         return this.FScore;
+    }
+
+    /**
+     * Directly sets the F-score, bypassing the automatic precision/TPR-based derivation performed
+     * by {@link #setPrecision(double)} and {@link #setTruePositiveRate(double)}. Use this when the
+     * correct F-score has already been computed by another means (e.g., by macro-averaging each
+     * category's own F-score), since 2*P*TPR/(P+TPR) is only valid when P and TPR come from the
+     * same confusion matrix — it does not compose correctly when P and TPR were independently
+     * averaged across categories of very different sizes.
+     */
+    public void setFScore(double fscore) {
+        this.FScore = fscore;
     }
 
     /**

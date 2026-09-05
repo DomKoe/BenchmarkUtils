@@ -74,6 +74,12 @@ public class ToolReport implements ToolReportProvider {
                         ""
                                 + new DecimalFormat("#0.00%")
                                         .format(overallToolResults.getOverallScore()));
+        html =
+                html.replace(
+                        "${scoreMicroAvg}",
+                        ""
+                                + new DecimalFormat("#0.00%")
+                                        .format(overallToolResults.getOverallScoreMicroAvg()));
         html = html.replace("${tool}", currentTool.getToolName());
         html = html.replace("${version}", currentTool.getTestSuiteVersion());
         html = html.replace("${projectlink}", BenchmarkScore.config.report.html.projectLinkEntry);

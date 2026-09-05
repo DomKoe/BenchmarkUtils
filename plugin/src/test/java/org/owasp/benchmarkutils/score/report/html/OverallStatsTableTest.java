@@ -89,15 +89,16 @@ class OverallStatsTableTest {
         assertTrue(
                 actual.startsWith(
                         "<table class=\"table\"><tr><th>Tool</th><th>Type</th>"
-                                + "<th>${tprlabel}*</th><th>FPR*</th><th>Score*</th></tr>"));
+                                + "<th>${tprlabel}*</th><th>FPR*</th><th>Score*</th>"
+                                + "<th>Score (Pooled)*</th></tr>"));
         assertTrue(
                 actual.contains(
                         "<tr><td>Tool A v1.0</td><td>SAST</td><td>70.00%</td>"
-                                + "<td>50.00%</td><td>20.00%</td></tr>"));
+                                + "<td>50.00%</td><td>20.00%</td><td>0.00%</td></tr>"));
         assertTrue(
                 actual.contains(
                         "<tr><td>Tool B v2.0</td><td>DAST</td><td>80.00%</td>"
-                                + "<td>60.00%</td><td>20.00%</td></tr>"));
+                                + "<td>60.00%</td><td>20.00%</td><td>0.00%</td></tr>"));
         assertTrue(
                 actual.endsWith(
                         "</table><p>*-Please refer to each tool's scorecard for "
@@ -139,7 +140,7 @@ class OverallStatsTableTest {
         assertTrue(
                 actual.contains(
                         "<tr class=\"success\"><td>Tool A v1.0</td><td>SAST</td>"
-                                + "<td>80.00%</td><td>10.00%</td><td>70.00%</td></tr>"));
+                                + "<td>80.00%</td><td>10.00%</td><td>70.00%</td><td>0.00%</td></tr>"));
     }
 
     @Test
@@ -173,7 +174,7 @@ class OverallStatsTableTest {
         assertTrue(
                 actual.contains(
                         "<tr class=\"danger\"><td>Tool A v1.0</td><td>SAST</td>"
-                                + "<td>20.00%</td><td>20.00%</td><td>0.00%</td></tr>"));
+                                + "<td>20.00%</td><td>20.00%</td><td>0.00%</td><td>0.00%</td></tr>"));
     }
 
     @Test
